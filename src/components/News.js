@@ -46,7 +46,7 @@ function News(props) {
   return (<>
       <div className="container my-3" >
       <h1 className='text-center' style={{marginTop:'90px'}}>Top {props.category} Headlines</h1>
-
+      {loading && <Spinner />}
       <InfiniteScroll
         dataLength={articles.length}
         next={fetchMoreData}
