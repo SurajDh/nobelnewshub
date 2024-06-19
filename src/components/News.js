@@ -5,16 +5,23 @@ import PropTypes from 'prop-types'
 import InfiniteScroll from 'react-infinite-scroll-component'
 
 function News(props) {
-
+ 
   const [articles, setArticles] = useState([]);
+  // eslint-disable-next-line
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line
+  
   const [page, setPage] = useState(1);
+  // eslint-disable-next-line
   const [pageSize, setPageSize] = useState(9);
+  // eslint-disable-next-line
+  
   const [totalResults, setTotalResults] = useState(0);
-
+  
   
   const updateNews = async () => {
-    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&in&apiKey=b8b7676fc6734432b37fdd18d198602d&page=${page}&pageSize=${pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&in&apiKey=${props.apiKey}&page=${page}&pageSize=${pageSize}`;
+ 
     setLoading(true);
     let data = await fetch(url);
     let parsedData = await data.json();
@@ -23,21 +30,20 @@ function News(props) {
     setLoading(false);
   }
   
-  useEffect(() => {
-    document.title = `${props.category} | NewsWave`;
-   updateNews();
-  }, []);
+  useEffect(() => {// eslint-disable-next-line
+    document.title = `${props.category} | NobelNewsHub`;// eslint-disable-next-line
+   updateNews();// eslint-disable-next-line
+  }, []);// eslint-disable-next-line
 
 
   const fetchMoreData = async () => {
-    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&in&apiKey=b8b7676fc6734432b37fdd18d198602d&page=${page+1}&pageSize=${pageSize}`;
+    const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&in&apiKey=${props.apiKey}&page=${page+1}&pageSize=${pageSize}`;
     setPage(page+1);
-    setLoading(true);
     let data = await fetch(url);
     let parsedData = await data.json();
     setArticles(articles.concat(parsedData.articles));
     setTotalResults(parsedData.totalResults);
-    setLoading(false);
+    
 
 
   };
@@ -46,7 +52,7 @@ function News(props) {
   return (<>
       <div className="container my-3" >
       <h1 className='text-center' style={{marginTop:'90px'}}>Top {props.category} Headlines</h1>
-
+      {loading && <Spinner />}
       <InfiniteScroll
         dataLength={articles.length}
         next={fetchMoreData}
